@@ -9,8 +9,6 @@ namespace Masticore.Mvc
     public abstract class CrudControllerBase<ViewModelType, IdType> : Controller
         where ViewModelType : class, IIdentifiable<IdType>
     {
-        #region Members
-
         /// <summary>
         /// Gets or sets a flag indicating if the Index action is enabled
         /// </summary>
@@ -55,10 +53,6 @@ namespace Masticore.Mvc
             return Task.FromResult(0);
         }
 
-        #endregion
-
-        #region CRUD Actions 
-
         /// <summary>
         /// Index action that shows a view of all models in the Service
         /// </summary>
@@ -81,7 +75,7 @@ namespace Masticore.Mvc
             if (!IsDetailsEnabled)
                 return HttpNotFound();
 
-            ViewModelType model = await Service.ReadAsync(id);
+            var model = await Service.ReadAsync(id);
             if (model == null)
                 return HttpNotFound();
 
@@ -134,7 +128,7 @@ namespace Masticore.Mvc
             if (!IsEditEnabled)
                 return HttpNotFound();
 
-            ViewModelType model = await Service.ReadAsync(id);
+            var model = await Service.ReadAsync(id);
             if (model == null)
             {
                 return HttpNotFound();
@@ -176,7 +170,7 @@ namespace Masticore.Mvc
             if (!IsDeleteEnabled)
                 return HttpNotFound();
 
-            ViewModelType model = await Service.ReadAsync(id);
+            var model = await Service.ReadAsync(id);
             if (model == null)
                 return HttpNotFound();
 
@@ -210,7 +204,7 @@ namespace Masticore.Mvc
             if (!IsCloneEnabled)
                 return HttpNotFound();
 
-            ViewModelType model = await Service.ReadAsync(id);
+            var model = await Service.ReadAsync(id);
             if (model == null)
                 return HttpNotFound();
 
@@ -230,16 +224,14 @@ namespace Masticore.Mvc
             if (!IsCloneEnabled)
                 return HttpNotFound();
 
-            ViewModelType model = await Service.ReadAsync(id);
+            var model = await Service.ReadAsync(id);
 
             if (model == null)
                 return HttpNotFound();
 
-            ViewModelType newModel = await Service.CreateAsync(model);
+            var newModel = await Service.CreateAsync(model);
 
             return RedirectToAction("Details", new { id = newModel.Id });
         }
-
-        #endregion
     }
 }

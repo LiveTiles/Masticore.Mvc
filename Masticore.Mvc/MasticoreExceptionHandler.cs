@@ -55,21 +55,19 @@ namespace Masticore.Mvc
             System.Diagnostics.Trace.TraceError(context.Exception.Message);
             System.Diagnostics.Trace.Flush();
 
-
             context.Result = new TextPlainErrorResult
             {
                 Request = context.ExceptionContext.Request,
                 Content = context.Exception.Message
             };
 #if !DEBUG
-             //TODO: Create a custom Exception type to handle this instead of using the Validation string. 
-            if (context.Exception.Message.StartsWith("Validation:"))
+            //TODO: Make KVP more robust, to return or log different levels of data (e.g., simple consumable string, validation, admin contact etc.)
+            if (context.Exception.Data.Contains("IsConsumable") && context.Exception.Data["IsConsumable"].ToString() == "true")
             {
-                var message = context.Exception.Message.Remove(0, 11);
                 context.Result = new TextPlainErrorResult
                 {
                     Request = context.ExceptionContext.Request,
-                    Content = message,
+                    Content = context.Exception.Message,
                 };
             }
             else
@@ -97,7 +95,7 @@ namespace Masticore.Mvc
 
             public Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
             {
-                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                var response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
                 response.Content = new StringContent(Content);
                 response.RequestMessage = Request;
                 return Task.FromResult(response);

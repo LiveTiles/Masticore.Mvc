@@ -3,11 +3,13 @@ using System.Web.Mvc;
 
 namespace Masticore.Mvc
 {
+    /// <inheritdoc />
     /// <summary>
     /// Filter based on RequireHttpsAttribute that will thoughtfully ignore HTTPS requirements if the request is local
     /// </summary>
     public class RequireSecureConnection : RequireHttpsAttribute
     {
+        /// <inheritdoc />
         /// <summary>
         /// Called when the user is being authorized in the system
         /// This will skip authorization if the request is local

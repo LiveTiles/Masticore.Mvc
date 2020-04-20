@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -34,9 +30,9 @@ namespace Masticore.Mvc
         {
             using (var sw = new StringWriter())
             {
-                ControllerContext controllerContext = GetControllerContext();
+                var controllerContext = GetControllerContext();
 
-                IView view = GetView(viewPath, layoutPath, controllerContext);
+                var view = GetView(viewPath, layoutPath, controllerContext);
 
                 view.Render(new ViewContext(controllerContext, view, new ViewDataDictionary { Model = model }, new TempDataDictionary(), sw), sw);
 
@@ -53,7 +49,7 @@ namespace Masticore.Mvc
         /// <returns></returns>
         private IView GetView(string viewName, string layoutName, ControllerContext controllerContext)
         {
-            string viewId = string.Format("{0}{1}", viewName, layoutName);
+            var viewId = string.Format("{0}{1}", viewName, layoutName);
 
             if (!_viewCache.ContainsKey(viewId))
                 _viewCache[viewId] = ViewEngines.Engines.FindView(controllerContext, viewName, layoutName).View;
